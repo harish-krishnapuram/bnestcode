@@ -8,5 +8,10 @@ router.register(
     SubmissionViewSet,
     basename="submissions"
 )
+from django.urls import path
+from .views import RunCodeAPIView
 
-urlpatterns = router.urls
+urlpatterns = [
+    path("run/", RunCodeAPIView.as_view()),
+]
+urlpatterns += router.urls

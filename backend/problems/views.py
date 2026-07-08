@@ -8,7 +8,7 @@ from .models import Problem,TestCase
 class ProblemViewSet(ModelViewSet):
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
-
+    lookup_field = "slug"
     def get_permissions(self):
         if self.action in ["list", "retrieve"]:
             return [IsAuthenticated()]

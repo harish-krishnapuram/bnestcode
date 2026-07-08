@@ -1,14 +1,21 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUser, FaLock, FaCode } from "react-icons/fa";
+import {
+    FaUser,
+    FaLock,
+    FaEnvelope,
+    FaCode
+} from "react-icons/fa";
 import axios from "axios";
-import { useAuth } from "../context/Authcontext";
-const Login = () => {
+
+const Register = () => {
     const navigate = useNavigate();
-    const {login} = useAuth()
+
     const [formData, setFormData] = useState({
         username: "",
+        email: "",
         password: "",
+        confirm_password: "",
     });
 
     const [loading, setLoading] = useState(false);
@@ -24,24 +31,32 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (formData.password !== formData.confirm_password) {
+            setError("Passwords do not match");
+            return;
+        }
+
         try {
             setLoading(true);
             setError("");
-            console.log('entered')
-            const response = await axios.post(
-                "http://127.0.0.1:8000/api/login/",
-                formData
-            );
-            login(response.data)
-            console.log('success')
-            // localStorage.setItem("access", response.data.access);
-            // localStorage.setItem("refresh", response.data.refresh);
 
-            navigate("/");
+            const payload = {
+                username: formData.username,
+                email: formData.email,
+                password: formData.password,
+            };
+
+            await axios.post(
+                "http://127.0.0.1:8000/api/register/",
+                payload
+            );
+
+            navigate("/login");
+
         } catch (err) {
             setError(
                 err.response?.data?.detail ||
-                "Invalid username or password"
+                "Registration failed"
             );
         } finally {
             setLoading(false);
@@ -58,14 +73,13 @@ const Login = () => {
         >
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-lg-4 col-md-6">
+                    <div className="col-lg-5 col-md-7">
 
-                        <div
-                            className="card border-0 shadow-lg rounded-4"
-                        >
+                        <div className="card border-0 shadow-lg rounded-4">
                             <div className="card-body p-5">
 
                                 <div className="text-center mb-4">
+
                                     <div
                                         className="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
                                         style={{
@@ -80,11 +94,11 @@ const Login = () => {
                                     </div>
 
                                     <h2 className="fw-bold mb-1">
-                                        BnestCode
+                                        Create Account
                                     </h2>
 
                                     <p className="text-muted">
-                                        Practice. Learn. Improve.
+                                        Start solving coding challenges today
                                     </p>
                                 </div>
 
@@ -109,7 +123,7 @@ const Login = () => {
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                placeholder="Enter username"
+                                                placeholder="Choose username"
                                                 name="username"
                                                 value={formData.username}
                                                 onChange={handleChange}
@@ -118,7 +132,29 @@ const Login = () => {
                                         </div>
                                     </div>
 
-                                    <div className="mb-4">
+                                    <div className="mb-3">
+                                        <label className="form-label fw-semibold">
+                                            Email
+                                        </label>
+
+                                        <div className="input-group">
+                                            <span className="input-group-text bg-white">
+                                                <FaEnvelope />
+                                            </span>
+
+                                            <input
+                                                type="email"
+                                                className="form-control"
+                                                placeholder="Enter email"
+                                                name="email"
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="mb-3">
                                         <label className="form-label fw-semibold">
                                             Password
                                         </label>
@@ -131,9 +167,31 @@ const Login = () => {
                                             <input
                                                 type="password"
                                                 className="form-control"
-                                                placeholder="Enter password"
+                                                placeholder="Create password"
                                                 name="password"
                                                 value={formData.password}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="mb-4">
+                                        <label className="form-label fw-semibold">
+                                            Confirm Password
+                                        </label>
+
+                                        <div className="input-group">
+                                            <span className="input-group-text bg-white">
+                                                <FaLock />
+                                            </span>
+
+                                            <input
+                                                type="password"
+                                                className="form-control"
+                                                placeholder="Confirm password"
+                                                name="confirm_password"
+                                                value={formData.confirm_password}
                                                 onChange={handleChange}
                                                 required
                                             />
@@ -146,8 +204,8 @@ const Login = () => {
                                     >
                                         {
                                             loading
-                                                ? "Signing In..."
-                                                : "Login"
+                                                ? "Creating Account..."
+                                                : "Register"
                                         }
                                     </button>
 
@@ -155,14 +213,14 @@ const Login = () => {
 
                                 <div className="text-center mt-4">
                                     <span className="text-muted">
-                                        Don't have an account?
+                                        Already have an account?
                                     </span>
 
                                     <Link
-                                        to="/register"
+                                        to="/login"
                                         className="text-decoration-none ms-2 fw-semibold"
                                     >
-                                        Register
+                                        Login
                                     </Link>
                                 </div>
 
@@ -176,4 +234,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;
