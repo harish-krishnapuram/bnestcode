@@ -1,9 +1,7 @@
 from django.db import models
 
+
 # Create your models here.
-from django.db import models
-
-
 class Problem(models.Model):
     DIFFICULTY_CHOICES = (
         ("easy", "Easy"),
@@ -47,7 +45,6 @@ class Problem(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True
     )
-
     def __str__(self):
         return self.title
     
