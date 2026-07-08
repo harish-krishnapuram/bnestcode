@@ -1,0 +1,64 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.*
+
+# Django database
+db.sqlite3
+db.sqlite3-journal
+
+# Django generated files
+media/
+staticfiles/
+
+# Logs
+*.log
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+
+# Mypy
+.mypy_cache/
+
+# Ruff
+.ruff_cache/
+
+# PyCharm
+.idea/
+
+# VSCode settings
+.vscode/
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Docker
+*.pid
+
+# Local settings
+local_settings.py
