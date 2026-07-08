@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .services import run_test_cases
 from rest_framework.serializers import Serializer
+from problems.models import Problem
 
 
 class SubmissionViewSet(
@@ -100,9 +101,9 @@ class DashboardAPIView(APIView):
             })
 
         bronze_goal = 20
-
+        total_problems = Problem.objects.count()
         remaining_to_goal = max(
-            bronze_goal - solved_count,
+            total_problems - solved_count,
             0
         )
 
@@ -110,7 +111,6 @@ class DashboardAPIView(APIView):
             (solved_count / bronze_goal) * 100,
             100
         )
-
         data = {
             "solved_count": solved_count,
             "total_submissions": total_submissions,

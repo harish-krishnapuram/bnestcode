@@ -40,10 +40,12 @@ const ProblemDetails = () => {
             );
 
             setProblem(response.data);
-
-            setCode(
-                response.data.starter_code_python
-            );
+            if (response.data.previous_python_submission) {
+                setCode(response.data.previous_python_submission);
+            }
+            else {
+                setCode(response.data.starter_code_python);
+            }
         }
         catch (error) {
             console.log(error);

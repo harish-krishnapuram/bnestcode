@@ -35,3 +35,20 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data["email"],
             password=validated_data["password"]
         )
+    
+from rest_framework import serializers
+
+
+class ProfileSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    username = serializers.CharField()
+    email = serializers.EmailField()
+
+    solved_count = serializers.IntegerField()
+    total_submissions = serializers.IntegerField()
+    accepted_submissions = serializers.IntegerField()
+    acceptance_rate = serializers.FloatField()
+
+    favorite_language = serializers.CharField()
+
+    recent_submissions = serializers.ListField()

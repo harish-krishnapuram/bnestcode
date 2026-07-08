@@ -5,8 +5,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Problems from "./pages/Problems";
 import ProblemDetails from "./pages/ProblemDetails";
-// import Submissions from "./pages/Submissions";
-// import Profile from "./pages/Profile";
+import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Progress from "./pages/Progress";
 function App() {
@@ -33,10 +32,10 @@ function App() {
             element={<Progress />}
           />
 
-          {/* <Route
+          <Route
             path="/profile"
             element={<Profile />}
-          /> */}
+          />
 
         </Route>
 
