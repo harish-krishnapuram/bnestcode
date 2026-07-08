@@ -45,7 +45,7 @@ const Navbar = () => {
           <ul className="navbar-nav ms-auto align-items-lg-center">
 
             <li className="nav-item mx-2">
-              <Link className="nav-link" to="/dashboard">
+              <Link className="nav-link" to="/">
                 Dashboard
               </Link>
             </li>

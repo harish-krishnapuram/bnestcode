@@ -8,7 +8,7 @@ import ProblemDetails from "./pages/ProblemDetails";
 // import Submissions from "./pages/Submissions";
 // import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
-
+import Progress from "./pages/Progress";
 function App() {
   return (
     <BrowserRouter>
@@ -28,12 +28,12 @@ function App() {
             element={<ProblemDetails />}
           />
 
-          {/* <Route
-            path="/submissions"
-            element={<Submissions />}
+          <Route
+            path="/progress"
+            element={<Progress />}
           />
 
-          <Route
+          {/* <Route
             path="/profile"
             element={<Profile />}
           /> */}

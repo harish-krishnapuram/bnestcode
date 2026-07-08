@@ -37,3 +37,15 @@ class SubmissionSerializer(serializers.ModelSerializer):
             "total_test_cases",
             "execution_time",
         )
+
+
+from rest_framework import serializers
+
+class DashboardSerializer(serializers.Serializer):
+    solved_count = serializers.IntegerField()
+    total_submissions = serializers.IntegerField()
+    acceptance_rate = serializers.FloatField()
+    day_streak = serializers.IntegerField()
+    goal_progress = serializers.FloatField()
+    remaining_to_goal = serializers.IntegerField()
+    recent_activity = serializers.ListField()

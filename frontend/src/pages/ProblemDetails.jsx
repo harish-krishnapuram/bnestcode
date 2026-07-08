@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import LanguageSelector from "../components/LanguageSelector";
 import CodeEditor from "../components/CodeEditor";
 import OutputPanel from "../components/OutputPanel";
+import api from "../services/api";
 
 const ProblemDetails = () => {
     const { slug } = useParams();
@@ -65,6 +66,30 @@ const ProblemDetails = () => {
         }
     };
 
+    const submitSolution = async () => {
+        try {
+            const response = await api.post(
+                "/submissions/",
+                {
+                    problem: problem.id,
+                    language,
+                    code
+                }
+            );
+    
+            console.log(response.data);
+    
+            alert(response.data.status);
+            setOutput({
+                type: "submit",
+                ...response.data
+            });
+    
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const runCode = async () => {
         try {
             setLoading(true);
@@ -85,7 +110,10 @@ const ProblemDetails = () => {
                 }
             );
 
-            setOutput(response.data);
+            setOutput({
+                type: "run",
+                ...response.data
+            });
         }
         catch (error) {
             console.log(error);
@@ -208,7 +236,7 @@ const ProblemDetails = () => {
                                         language={language}
                                         setLanguage={handleLanguageChange}
                                     />
-
+                                    <div>
                                     <button
                                         className="btn btn-primary"
                                         onClick={runCode}
@@ -220,6 +248,13 @@ const ProblemDetails = () => {
                                                 : "Run Test Cases"
                                         }
                                     </button>
+                                    <button
+                                        className="btn btn-success ms-2"
+                                        onClick={submitSolution}
+                                    >
+                                        Submit Solution
+                                    </button>
+                                    </div>
 
                                 </div>
 

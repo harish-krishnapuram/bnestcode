@@ -1,62 +1,49 @@
 const OutputPanel = ({ output }) => {
     if (!output) return null;
 
-    return (
-        <div className="card shadow border-0 rounded-4 mt-3">
-            <div className="card-body">
-                <h5 className="fw-bold mb-3">
-                    Output
-                </h5>
+return (
+    <div className="card shadow-sm mt-3">
+        <div className="card-body">
 
-                {
-                    output.status === "accepted" &&
-                    (
-                        <div className="alert alert-success">
-                            ✅ Accepted
-                            <br />
-                            Passed {output.passed}/{output.total} test cases
-                        </div>
-                    )
-                }
+            {
+                output.type === "run" &&
+                <h5>Run Test Cases Result</h5>
+            }
 
-                {
-                    output.status === "wrong_answer" &&
-                    (
-                        <div className="alert alert-danger">
-                            ❌ Wrong Answer
-                            <br />
-                            Passed {output.passed}/{output.total} test cases
-                        </div>
-                    )
-                }
+            {
+                output.type === "submit" &&
+                <h5>Submission Result</h5>
+            }
 
-                {
-                    output.status === "runtime_error" &&
-                    (
-                        <div className="alert alert-warning">
-                            ⚠ Runtime Error
-                            <pre className="mt-2">
-                                {output.error}
-                            </pre>
-                        </div>
-                    )
-                }
+            <h4>{output.status}</h4>
 
-                {
-                    output.stdout &&
-                    (
-                        <>
-                            <h6>Console Output</h6>
+            <p>
+                Passed {output.passed} /
+                {output.total} test cases
+            </p>
 
-                            <pre className="bg-dark text-light p-3 rounded">
-                                {output.stdout}
-                            </pre>
-                        </>
-                    )
-                }
-            </div>
+            {
+                output.failed_testcase &&
+                <>
+                    <p>
+                        Expected:
+                        {JSON.stringify(
+                            output.failed_testcase.expected
+                        )}
+                    </p>
+
+                    <p>
+                        Received:
+                        {JSON.stringify(
+                            output.failed_testcase.received
+                        )}
+                    </p>
+                </>
+            }
+
         </div>
-    );
+    </div>
+);
 };
 
 export default OutputPanel;
