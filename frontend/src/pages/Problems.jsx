@@ -143,13 +143,13 @@ const Problems = () => {
                                     <th>Difficulty</th>
                                 </tr>
                             </thead>
-                            {loading &&  <div className="container py-5 text-center">
+                            {loading &&  <div className="container py-5 text-center d-flex flex-column justify-content-center align-items-center">
                                     <div
                                         className="spinner-border text-primary"
                                     ></div>
 
                                     <p className="mt-3">
-                                        Loading Dashboard...
+                                        Loading Problems...
                                     </p>
                                     </div>
                             }
