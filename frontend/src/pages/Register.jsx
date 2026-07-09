@@ -32,11 +32,37 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(!formData.username){
+            setError('Username is required')
+            return;
+        }
+
+        if(!formData.email){
+            setError('Email is required')
+            return;
+        }
+
+        if(!formData.password){
+            setError('password is required')
+            return;
+        }
+
+        if(!formData.confirm_password){
+            setError('confirm password is required')
+            return;
+        }
+
+        if (formData.password.length<8){
+            setError('password length should be greater than 8')
+            return;
+        }
 
         if (formData.password !== formData.confirm_password) {
             setError("Passwords do not match");
             return;
         }
+
+        
 
         try {
             setLoading(true);
@@ -57,7 +83,7 @@ const Register = () => {
 
         } catch (err) {
             setError(
-                err.response?.data?.detail ||
+                JSON.stringify(err.response.data) ||
                 "Registration failed"
             );
             toast.error('🚫 Signup failed. Please check the entered details.')

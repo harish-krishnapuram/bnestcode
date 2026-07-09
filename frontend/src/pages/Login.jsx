@@ -25,7 +25,14 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        if(!formData.username){
+            setError('Username is required')
+            return;
+        }
+        if(!formData.password){
+            setError('Password is required')
+            return;
+        }
         try {
             setLoading(true);
             setError("");
