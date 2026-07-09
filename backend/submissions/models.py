@@ -53,5 +53,13 @@ class Submission(models.Model):
     class Meta:
         ordering = ["-submitted_at"]
 
+    @classmethod
+    def cleanup_old_submissions(cls, user, problem):
+        old = cls.objects.filter(
+            user=user,
+            problem=problem
+        ).order_by("-submitted_at")[5:]
+
+        old.delete()
     def __str__(self):
         return f"{self.user.username} - {self.problem.title}"

@@ -7,6 +7,7 @@ import LanguageSelector from "../components/LanguageSelector";
 import CodeEditor from "../components/CodeEditor";
 import OutputPanel from "../components/OutputPanel";
 import api from "../services/api";
+import { toast } from "react-toastify";
 
 const ProblemDetails = () => {
     const { slug } = useParams();
@@ -30,13 +31,8 @@ const ProblemDetails = () => {
         try {
             const token = localStorage.getItem("access");
 
-            const response = await axios.get(
-                `http://127.0.0.1:8000/api/problems/${slug}/`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+            const response = await api.get(
+                `/problems/${slug}/`,
             );
 
             setProblem(response.data);
@@ -81,14 +77,28 @@ const ProblemDetails = () => {
     
             console.log(response.data);
     
-            alert(response.data.status);
+            // alert(response.data.status);
             setOutput({
                 type: "submit",
                 ...response.data
             });
+            if (response.data.status === "accepted") {
+                toast.success("🎉 All test cases passed!");
+              } else {
+                toast.error("❌ Some test cases failed.");
+              }
     
         } catch (error) {
             console.log(error);
+            toast.error("Submission failed.");
+        }
+        finally{
+            setTimeout(() => {
+                outputRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }, 100);
         }
     };
 
@@ -98,18 +108,13 @@ const ProblemDetails = () => {
 
             const token = localStorage.getItem("access");
 
-            const response = await axios.post(
-                "http://127.0.0.1:8000/api/run/",
+            const response = await api.post(
+                "/run/",
                 {
                     code,
                     language,
                     problem_id: problem.id,
                 },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
             );
 
             setOutput({

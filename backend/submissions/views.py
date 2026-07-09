@@ -40,6 +40,19 @@ class SubmissionViewSet(
             passed_test_cases=result.get("passed", 0),
             total_test_cases=result.get("total", 0),
         )
+        old_submission_ids = Submission.objects.filter(
+        user=self.request.user,
+        problem=problem,
+        ).order_by(
+            "-submitted_at"
+        ).values_list(
+            "id",
+            flat=True
+        )[5:]
+
+        Submission.objects.filter(
+            id__in=list(old_submission_ids)
+        ).delete()
 class RunCodeAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -108,7 +121,7 @@ class DashboardAPIView(APIView):
         )
 
         goal_progress = min(
-            (solved_count / bronze_goal) * 100,
+            (solved_count / total_problems) * 100,
             100
         )
         data = {

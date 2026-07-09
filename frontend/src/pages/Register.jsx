@@ -7,6 +7,8 @@ import {
     FaCode
 } from "react-icons/fa";
 import axios from "axios";
+import { toast } from "react-toastify";
+import api from "../services/api";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -46,11 +48,11 @@ const Register = () => {
                 password: formData.password,
             };
 
-            await axios.post(
-                "http://127.0.0.1:8000/api/register/",
+            await api.post(
+                "/signup/",
                 payload
             );
-
+            toast.success('🎉 Account created successfully! Welcome aboard 🚀')
             navigate("/login");
 
         } catch (err) {
@@ -58,6 +60,7 @@ const Register = () => {
                 err.response?.data?.detail ||
                 "Registration failed"
             );
+            toast.error('🚫 Signup failed. Please check the entered details.')
         } finally {
             setLoading(false);
         }

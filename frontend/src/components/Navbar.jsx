@@ -7,6 +7,7 @@ import {
   FaSignOutAlt
 } from "react-icons/fa";
 import { useAuth } from "../context/Authcontext";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -14,12 +15,12 @@ const Navbar = () => {
 
   const logoutUser = () => {
     logout()
-
+    toast.success('🔒 Logged out successfully. Keep coding and keep growing 🚀')
     navigate("/login");
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
       <div className="container">
 
         <Link

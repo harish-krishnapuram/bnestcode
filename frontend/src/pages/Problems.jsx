@@ -4,6 +4,7 @@ import { FaSearch, FaCheckCircle, FaRegCircle } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useAuth } from "../context/Authcontext";
+import api from '../services/api'
 
 const Problems = () => {
     const navigate = useNavigate();
@@ -43,13 +44,8 @@ const Problems = () => {
         try {
             // const token = localStorage.getItem("access");
 
-            const response = await axios.get(
-                "http://127.0.0.1:8000/api/problems/",
-                {
-                    headers: {
-                        Authorization: `Bearer ${user}`
-                    }
-                }
+            const response = await api.get(
+                "/problems/"
             );
 
             setProblems(response.data);

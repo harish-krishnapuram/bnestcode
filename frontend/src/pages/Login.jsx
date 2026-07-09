@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaLock, FaCode } from "react-icons/fa";
 import axios from "axios";
 import { useAuth } from "../context/Authcontext";
+import { toast } from "react-toastify";
+import api from "../services/api";
 const Login = () => {
     const navigate = useNavigate();
     const {login} = useAuth()
@@ -28,12 +30,13 @@ const Login = () => {
             setLoading(true);
             setError("");
             console.log('entered')
-            const response = await axios.post(
-                "http://127.0.0.1:8000/api/login/",
+            const response = await api.post(
+                "/login/",
                 formData
             );
             login(response.data)
-            console.log('success')
+            // console.log('success')
+            toast.success('🎉 Logged in successfully! Ready to code 🚀')
             // localStorage.setItem("access", response.data.access);
             // localStorage.setItem("refresh", response.data.refresh);
 
@@ -43,6 +46,7 @@ const Login = () => {
                 err.response?.data?.detail ||
                 "Invalid username or password"
             );
+            toast.error('🚫 Login failed. Please check your credentials.')
         } finally {
             setLoading(false);
         }

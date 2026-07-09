@@ -6,7 +6,9 @@ from .serializers import ProblemSerializer,TestCaseSerializer
 from .models import Problem,TestCase
 
 class ProblemViewSet(ModelViewSet):
-    queryset = Problem.objects.all()
+    queryset = Problem.objects.prefetch_related(
+        "test_cases"
+    )
     serializer_class = ProblemSerializer
     lookup_field = "slug"
     def get_permissions(self):

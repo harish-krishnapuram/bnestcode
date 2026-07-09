@@ -8,9 +8,12 @@ import ProblemDetails from "./pages/ProblemDetails";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Progress from "./pages/Progress";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <BrowserRouter>
+      <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
 
         <Route path="/login" element={<Login />} />
