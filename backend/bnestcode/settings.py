@@ -24,7 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-bha&mc0b^ek4qyl&k&g7kc94qlf!km03tf15%(6rb=_^^=x*jc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-config("DEBUG", default=False, cast=bool)
+DEBUG = config(
+    "DEBUG",
+    default=False,
+    cast=bool
+)
 
 # Set on Render as: ALLOWED_HOSTS=your-app.onrender.com,localhost,127.0.0.1
 ALLOWED_HOSTS = config(
@@ -137,15 +141,16 @@ AUTH_USER_MODEL = "accounts.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
     ),
-    "DEFAULT_RENDERER_CLASSES": [
+    "DEFAULT_RENDERER_CLASSES": (
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
-    ]
+    ),
 }
 
 
