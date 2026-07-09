@@ -14,6 +14,7 @@ const Problems = () => {
     const [filteredProblems, setFilteredProblems] = useState([]);
     const [search, setSearch] = useState("");
     const [difficulty, setDifficulty] = useState("all");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchProblems();
@@ -50,8 +51,12 @@ const Problems = () => {
 
             setProblems(response.data);
             setFilteredProblems(response.data);
+            setLoading(false)
         } catch (error) {
             console.log(error);
+            setLoading(false)
+        }finally{
+            setLoading(false)
         }
     };
 
@@ -138,6 +143,16 @@ const Problems = () => {
                                     <th>Difficulty</th>
                                 </tr>
                             </thead>
+                            {loading &&  <div className="container py-5 text-center">
+                                    <div
+                                        className="spinner-border text-primary"
+                                    ></div>
+
+                                    <p className="mt-3">
+                                        Loading Dashboard...
+                                    </p>
+                                    </div>
+                            }
 
                             <tbody>
 
