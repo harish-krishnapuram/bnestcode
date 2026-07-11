@@ -8,6 +8,8 @@ import CodeEditor from "../components/CodeEditor";
 import OutputPanel from "../components/OutputPanel";
 import api from "../services/api";
 import { toast } from "react-toastify";
+import '../css/problem-details.css';
+import { FaPlay } from "react-icons/fa";
 
 const ProblemDetails = () => {
     const { slug } = useParams();
@@ -22,10 +24,50 @@ const ProblemDetails = () => {
     const [output, setOutput] = useState(null);
 
     const [loading, setLoading] = useState(false);
+    const [runcodeLoad,setRuncodeLoad] = useState(false)
 
+    
     useEffect(() => {
         fetchProblem();
     }, [slug]);
+
+    
+
+    const runCustomCode = async () => {
+        setRuncodeLoad(true);
+    
+        try {
+            const response = await api.post("/run-code/", {
+                code: code
+            });
+    
+            setOutput(response.data);
+    
+        } catch (err) {
+    
+            if (err.response) {
+                setOutput(err.response.data);
+            } else {
+                setOutput({
+                    stdout: "",
+                    stderr: "Unable to connect to server.",
+                    return_code: -1
+                });
+            }
+    
+        } finally {
+            setRuncodeLoad(false);
+    
+            setTimeout(() => {
+                outputRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }, 100);
+        }
+    };
+
+    
 
     const fetchProblem = async () => {
         try {
@@ -105,9 +147,6 @@ const ProblemDetails = () => {
     const runCode = async () => {
         try {
             setLoading(true);
-
-            const token = localStorage.getItem("access");
-
             const response = await api.post(
                 "/run/",
                 {
@@ -116,7 +155,6 @@ const ProblemDetails = () => {
                     problem_id: problem.id,
                 },
             );
-
             setOutput({
                 type: "run",
                 ...response.data
@@ -181,6 +219,21 @@ const ProblemDetails = () => {
                                 <p>
                                     {problem.description}
                                 </p>
+                                <hr/>
+
+                                <div className="border rounded p-3 mt-3 bg-dark text-light">
+                                    <h6 className="text-warning mb-3">
+                                        ⚠️ Run Code Guidelines
+                                    </h6>
+
+                                    <ul className="mb-0">
+                                        <li>Run Code does not provide input through <code>input()</code>.</li>
+                                        <li>Use hardcoded sample values to test your code.</li>
+                                        <li>Submit Solution supports hidden test cases.</li>
+                                        <li>Avoid infinite loops such as <code>while True:</code>.</li>
+                                        <li>Programs exceeding execution limits may be terminated automatically.</li>
+                                    </ul>
+                                </div>
 
                                 <hr />
 
@@ -238,11 +291,27 @@ const ProblemDetails = () => {
                             <div className="card-body">
 
                                 <div className="d-flex justify-content-between mb-3">
-
+                                    <div className="d-flex align-items-center">
                                     <LanguageSelector
                                         language={language}
                                         setLanguage={handleLanguageChange}
                                     />
+                                    <label className="ms-3 d-flex align-items-center">
+                                        <button
+                                            className="btn btn-success d-flex align-items-center gap-2 px-4 py-2 fw-semibold shadow-sm"
+                                            onClick={runCustomCode}
+                                            disabled={runcodeLoad}
+                                        >
+                                            <FaPlay size={14} />
+
+                                            {
+                                                runcodeLoad
+                                                    ? "Running..."
+                                                    : "Run Code"
+                                            }
+                                        </button>
+                                    </label>
+                                    </div>
                                     <div>
                                     <button
                                         className="btn btn-primary"
@@ -274,6 +343,7 @@ const ProblemDetails = () => {
                             </div>
 
                         </div>
+                        
                         <div ref={outputRef}>
                         <OutputPanel output={output} />
                         </div>

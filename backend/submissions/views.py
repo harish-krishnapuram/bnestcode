@@ -135,3 +135,55 @@ class DashboardAPIView(APIView):
         }
 
         return Response(data)
+    
+import os
+import uuid
+import subprocess
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+
+class RunCustomCodeAPIView(APIView):
+    def post(self, request):
+        code = request.data.get("code")
+        if not code:
+            return Response(
+                {"error": "Code is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        # Generate unique filename
+        filename = f"{uuid.uuid4()}.py"
+        try:
+            with open(filename, "w", encoding="utf-8") as f:
+                f.write(code)
+
+            result = subprocess.run(
+                ["python", filename],
+                capture_output=True,
+                text=True,
+                timeout=2
+            )
+
+            return Response({
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+                "return_code": result.returncode
+            })
+
+        except subprocess.TimeoutExpired:
+            return Response({
+                "stdout": "",
+                "stderr": "Time Limit Exceeded",
+                "return_code": -1
+            }, status=status.HTTP_408_REQUEST_TIMEOUT)
+
+        except Exception as e:
+            return Response({
+                "stdout": "",
+                "stderr": str(e),
+                "return_code": -1
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        finally:
+            if os.path.exists(filename):
+                os.remove(filename)

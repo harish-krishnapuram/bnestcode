@@ -9,7 +9,7 @@ router.register(
     basename="submissions"
 )
 from django.urls import path
-from .views import RunCodeAPIView
+from .views import RunCodeAPIView,RunCustomCodeAPIView
 
 urlpatterns = [
     path("run/", RunCodeAPIView.as_view()),
@@ -17,6 +17,11 @@ urlpatterns = [
         "dashboard/",
         DashboardAPIView.as_view(),
         name="dashboard"
+    ),
+    path(
+        "run-code/",
+        RunCustomCodeAPIView.as_view(),
+        name="run-code"
     ),
 ]
 urlpatterns += router.urls
