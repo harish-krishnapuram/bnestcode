@@ -36,17 +36,12 @@ const Login = () => {
         try {
             setLoading(true);
             setError("");
-            console.log('entered')
             const response = await api.post(
                 "/login/",
                 formData
             );
             login(response.data)
-            // console.log('success')
             toast.success('🎉 Logged in successfully! Ready to code 🚀')
-            // localStorage.setItem("access", response.data.access);
-            // localStorage.setItem("refresh", response.data.refresh);
-
             navigate("/");
         } catch (err) {
             setError(
