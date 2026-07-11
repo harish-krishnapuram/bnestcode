@@ -59,6 +59,13 @@ const Navbar = () => {
             </li>
 
             <li className="nav-item mx-2">
+              <Link className="nav-link" to="/practice">
+                <FaCode className="me-1" />
+                Code Practice
+              </Link>
+            </li>
+
+            <li className="nav-item mx-2">
               <Link className="nav-link" to="/progress">
                 <FaChartLine className="me-1" />
                 Progress

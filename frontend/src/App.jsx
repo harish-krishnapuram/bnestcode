@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Progress from "./pages/Progress";
 import { ToastContainer } from "react-toastify";
+import PracticeCode from "./pages/PracticeCode";
 import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
@@ -33,6 +34,11 @@ function App() {
           <Route
             path="/progress"
             element={<Progress />}
+          />
+
+          <Route
+          path="/practice"
+          element={<PracticeCode />}
           />
 
           <Route
